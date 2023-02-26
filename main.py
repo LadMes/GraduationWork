@@ -6,18 +6,19 @@ with open("node_coords.txt", mode="r") as file:
 
 
 elems = dict()
-elem_num = 0
 with open("elem_nodes.txt", mode="r") as file:
+    elem_num = 0
     while True:
-        num_nodes_per_elem = file.readline()
-        if num_nodes_per_elem == "":
+        try:
+            num_nodes_per_elem = int(file.readline())
+            elem_num += 1
+            elem_nodes = list()
+            for i in range(int(num_nodes_per_elem)):
+                node = file.readline()
+                elem_nodes.append(int(node))
+            elems[elem_num] = { "nodes": elem_nodes }
+        except:
             break
-        elem_num += 1
-        elem_nodes = list()
-        for i in range(int(num_nodes_per_elem)):
-            node = file.readline()
-            elem_nodes.append(int(node))
-        elems[elem_num] = { "nodes": elem_nodes }
 
 
 with open("elem_shpars.txt", mode="r") as file:
