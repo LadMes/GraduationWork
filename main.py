@@ -16,7 +16,17 @@ with open("elem_nodes.txt", mode="r") as file:
         for i in range(int(num_nodes_per_elem)):
             node = file.readline()
             elem_nodes.append(int(node))
-        elems[elem_num] = { "nodes": elem_nodes }
+        elems[elem_num] = { "nodes": elem_nodes, "elem_shape_prop": dict() }
 
 
-print(elems[1251])
+with open("elem_shpars.txt", mode="r") as file:
+    for line in file:
+        values = line.split(",")
+        elems[int(values[0])]["elem_shape_prop"] = { 
+            "ASPE": float(values[1]), 
+            "JACR": float(values[2]), 
+            "MAXA": float(values[3]), 
+            "PARA": float(values[4])
+        }
+
+print(elems[1241])
