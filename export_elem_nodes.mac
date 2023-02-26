@@ -1,0 +1,26 @@
+!Export element nodes to CSV
+!NOTE:  *VWRITE command can only be executed from an external file by e.g /INPUT
+
+alls
+
+*CFOPEN,elem_nodes,txt
+
+*GET,num_elems_,ELEM,0,COUNT !Get the number of elements
+*DO,i,1,num_elems_,1
+	! Select an element and define its number of nodes
+	ESEL,S,ELEM,,i,i !Select the i-th element
+	NSEL,S,EXT !Select all nodes of the selected element
+	*GET,num_nodes_per_elem,NODE,0,COUNT !Get the number of nodes per element
+	
+	! Write the number of nodes per element for future correct parsing in a programming language
+	*VWRITE,num_nodes_per_elem
+	%I
+	
+	! Write the nodes which belong to the selected element
+	*DO,j,1,num_nodes_per_elem,1
+		*GET,node_,ELEM,i,NODE,j
+		*VWRITE,node_
+		%I
+	*ENDDO
+*ENDDO
+*CFCLOSE
