@@ -4,6 +4,7 @@ with open("node_coords.txt", mode="r") as file:
         values = line.split(",")
         nodes[int(values[0])] = { "nx": float(values[1]), "ny": float(values[2]) }
 
+
 elems = dict()
 elem_num = 0
 with open("elem_nodes.txt", mode="r") as file:
@@ -16,7 +17,7 @@ with open("elem_nodes.txt", mode="r") as file:
         for i in range(int(num_nodes_per_elem)):
             node = file.readline()
             elem_nodes.append(int(node))
-        elems[elem_num] = { "nodes": elem_nodes, "elem_shape_prop": dict() }
+        elems[elem_num] = { "nodes": elem_nodes }
 
 
 with open("elem_shpars.txt", mode="r") as file:
@@ -28,5 +29,5 @@ with open("elem_shpars.txt", mode="r") as file:
             "MAXA": float(values[3]), 
             "PARA": float(values[4])
         }
-
-print(elems[1241])
+        if len(values) == 6:
+            elems[int(values[0])]["elem_shape_prop"]["WARP"] = float(values[5])
