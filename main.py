@@ -1,8 +1,10 @@
+from helpers import *
+
 nodes = dict()
 with open("node_coords.txt", mode="r") as file:
     for line in file:
         values = line.split(",")
-        nodes[int(values[0])] = { "nx": float(values[1]), "ny": float(values[2]) }
+        nodes[int(values[0])] = { "x": float(values[1]), "y": float(values[2]) }
 
 
 elems = dict()

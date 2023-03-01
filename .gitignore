@@ -3,3 +3,4 @@ elem_nodes.txt
 elem_shpars.txt
 node_coords.txt
 export_elem_nodes_diff.mac
+__pycache__
