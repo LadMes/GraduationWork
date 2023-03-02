@@ -1,0 +1,25 @@
+!Export element centroid coords to CSV
+!NOTE:  *VWRITE command can only be executed from an external file by e.g /INPUT
+
+alls
+
+*CFOPEN,elem_centroid_coords,txt
+
+    *GET,num_elems_,ELEM,0,COUNT !Get the number of elements
+    *GET,elem_,ELEM,0,NUM,MIN !Get label of the first element
+
+    *DO,i,1,num_elems_,1
+        ! Define some parameters
+        *GET,centrx_,ELEM,elem_,CENT,X !Centroid X location (based on shape function) in the active coordinate system
+        *GET,centry_,ELEM,elem_,CENT,Y !Centroid Y location (based on shape function) in the active coordinate system
+      
+        
+        ! Write line
+        *VWRITE,elem_,centrx_,centry_
+        %I,%G,%G
+      
+        ! Select the next node
+        *GET,elem_,ELEM,elem_,NXTH
+      
+    *ENDDO
+*CFCLOSE

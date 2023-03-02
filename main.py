@@ -22,6 +22,11 @@ with open("elem_nodes.txt", mode="r") as file:
         except:
             break
 
+with open("elem_centroid_coords.txt", mode="r") as file:
+    for line in file:
+        values = line.split(",")
+        elems[int(values[0])]["centroid_coords"] = { "x": float(values[1]), "y": float(values[2]) }
+
 
 with open("elem_shpars.txt", mode="r") as file:
     for line in file:
