@@ -5,6 +5,7 @@ def max_coord(nodes, coord):
             max = nodes[node][coord]
     return max
 
+
 def min_coord(nodes, coord):
     min = nodes[1][coord]
     for node in nodes:
