@@ -22,6 +22,6 @@ matrix = numpy.zeros((num_y_tiles, num_x_tiles))
 
 for i in range(1, max(elems)):
     coords = elems[i]["centroid_coords"]
-    matrix[get_index(min_y, coords["y"], y_step)][get_index(min_x, coords["x"], x_step)] += 1
+    matrix[get_y_index(max_y, coords["y"], y_step)][get_x_index(min_x, coords["x"], x_step)] += 1
 
 print(matrix)
