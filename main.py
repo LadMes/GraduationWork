@@ -2,7 +2,7 @@ import numpy
 
 from src_readers import get_node_coords, get_elems
 from helpers import *
-from elem_quality import *
+from elem_quality import is_bad_elem
 
 nodes = get_node_coords()
 elems = get_elems()
@@ -19,10 +19,23 @@ num_y_tiles = get_num_y_tiles()
 x_step = get_step(min_x, max_x, num_x_tiles)
 y_step = get_step(min_y, max_y, num_y_tiles)
 
-matrix = numpy.zeros((num_y_tiles, num_x_tiles))
+grid = [[ {"elems": list(), "bad_elems": list()} for _ in range(num_x_tiles)] for _ in range(num_y_tiles)] 
+
 
 for i in range(1, max(elems)):
     coords = elems[i]["centroid_coords"]
-    matrix[get_y_index(max_y, coords["y"], y_step)][get_x_index(min_x, coords["x"], x_step)] += 1
+    y = get_y_index(max_y, coords["y"], y_step)
+    x = get_x_index(min_x, coords["x"], x_step)
 
-print(matrix)
+    grid[y][x]["elems"].append(elems[i])
+    if is_bad_elem(elems[i]):
+        grid[y][x]["bad_elems"].append(elems[i])
+
+bad_elem_per_tile = numpy.zeros((num_y_tiles, num_x_tiles))
+for i in range(num_y_tiles):
+    for j in range(num_x_tiles):
+        num_elems = len(grid[i][j]["elems"])
+        if num_elems != 0:
+            bad_elem_per_tile[i][j] = len(grid[i][j]["bad_elems"]) / num_elems * 100
+
+print(bad_elem_per_tile)
