@@ -1,4 +1,3 @@
-import math
 import numpy
 
 from helpers import *
@@ -14,10 +13,10 @@ class Grid:
     min_y = 0
     max_y = 0
 
-    def __init__(self, num_y_tiles, num_x_tiles, nodes):
-        self.num_x_tiles = num_x_tiles
-        self.num_y_tiles = num_y_tiles
-        self.grid = [[ {"elems": list(), "bad_elems": list()} for _ in range(num_x_tiles)] for _ in range(num_y_tiles)]
+    def __init__(self, nodes):
+        self.num_x_tiles = get_num_x_tiles()
+        self.num_y_tiles = get_num_y_tiles()
+        self.grid = [[ {"elems": list(), "bad_elems": list()} for _ in range(self.num_x_tiles)] for _ in range(self.num_y_tiles)]
         self.min_x = min_coord(nodes, "x")
         self.max_x = max_coord(nodes, "x")
         self.min_y = min_coord(nodes, "y")
@@ -25,32 +24,18 @@ class Grid:
 
 
     def populate_grid(self, elems):
-        x_step = self.get_step(self.min_x, self.max_x, self.num_x_tiles)
-        y_step = self.get_step(self.min_y, self.max_y, self.num_y_tiles)
+        x_step = get_step(self.min_x, self.max_x, self.num_x_tiles)
+        y_step = get_step(self.min_y, self.max_y, self.num_y_tiles)
 
         for i in range(1, max(elems)):
             coords = elems[i]["centroid_coords"]
-            y = self.get_y_index(self.max_y, coords["y"], y_step)
-            x = self.get_x_index(self.min_x, coords["x"], x_step)
+            y = get_y_index(self.max_y, coords["y"], y_step)
+            x = get_x_index(self.min_x, coords["x"], x_step)
 
             self.grid[y][x]["elems"].append(elems[i])
             if is_bad_elem(elems[i]):
                 self.grid[y][x]["bad_elems"].append(elems[i])
 
-
-    def get_step(self, min_coord, max_coord, num_tiles):
-        return (abs(min_coord) + abs(max_coord)) / num_tiles
-
-
-    def get_x_index(self, min_x, x, x_step):
-        index = math.ceil((abs(min_x) + x) / x_step) - 1
-        return index if index >= 0 else 0
-
-
-    def get_y_index(self, max_y, y, y_step):
-        index = math.ceil((abs(max_y) - y) / y_step) - 1
-        return index if index >= 0 else 0
-    
 
     def calculate_percentage_bad_elems(self):
         percentage_bad_elems = numpy.zeros((self.num_y_tiles, self.num_x_tiles))
