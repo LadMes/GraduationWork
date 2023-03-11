@@ -13,10 +13,19 @@ class Grid:
     min_y = 0
     max_y = 0
 
-    def __init__(self, nodes):
+    def __init__(self, nodes, elems):
         self.num_x_tiles = get_num_x_tiles()
         self.num_y_tiles = get_num_y_tiles()
+        self.init_grid()
+        self.get_coords(nodes)
+        self.populate_grid(elems)
+
+
+    def init_grid(self):
         self.grid = [[ {"elems": list(), "bad_elems": list()} for _ in range(self.num_x_tiles)] for _ in range(self.num_y_tiles)]
+
+
+    def get_coords(self, nodes):
         self.min_x = min_coord(nodes, "x")
         self.max_x = max_coord(nodes, "x")
         self.min_y = min_coord(nodes, "y")

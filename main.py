@@ -5,8 +5,7 @@ from grid import *
 nodes = get_node_coords()
 elems = get_elems()
 
-grid = Grid(nodes)
-grid.populate_grid(elems)
+grid = Grid(nodes, elems)
 
 percentage_bad_elems = grid.calculate_percentage_bad_elems()
 
