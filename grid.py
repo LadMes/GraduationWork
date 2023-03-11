@@ -13,6 +13,7 @@ class Grid:
     min_y = 0
     max_y = 0
 
+
     def __init__(self, nodes, elems):
         self.num_x_tiles = get_num_x_tiles()
         self.num_y_tiles = get_num_y_tiles()
@@ -46,13 +47,15 @@ class Grid:
                 self.grid[y][x]["bad_elems"].append(elems[i])
 
 
-    def calculate_percentage_bad_elems(self):
-        percentage_bad_elems = numpy.zeros((self.num_y_tiles, self.num_x_tiles))
+class GridUtilities:
+    
+    def calculate_percentage_bad_elems(grid):
+        percentage_bad_elems = numpy.zeros((grid.num_y_tiles, grid.num_x_tiles))
 
-        for i in range(self.num_y_tiles):
-            for j in range(self.num_x_tiles):
-                num_elems = len(self.grid[i][j]["elems"])
+        for i in range(grid.num_y_tiles):
+            for j in range(grid.num_x_tiles):
+                num_elems = len(grid.grid[i][j]["elems"])
                 if num_elems != 0:
-                    percentage_bad_elems[i][j] = len(self.grid[i][j]["bad_elems"]) / num_elems * 100
-        
+                    percentage_bad_elems[i][j] = len(grid.grid[i][j]["bad_elems"]) / num_elems * 100
+            
         return percentage_bad_elems

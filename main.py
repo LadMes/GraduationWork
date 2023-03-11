@@ -7,6 +7,6 @@ elems = get_elems()
 
 grid = Grid(nodes, elems)
 
-percentage_bad_elems = grid.calculate_percentage_bad_elems()
+percentage_bad_elems = GridUtilities.calculate_percentage_bad_elems(grid)
 
 print(percentage_bad_elems)
