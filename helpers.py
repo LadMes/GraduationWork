@@ -1,17 +1,18 @@
 import math
 
 def max_coord(nodes, coord):
-    max = nodes[1][coord]
+    max = nodes[1]["coords"][coord]
     for node in nodes:
-        if nodes[node][coord] > max:
-            max = nodes[node][coord]
+        if nodes[node]["coords"][coord] > max:
+            max = nodes[node]["coords"][coord]
     return max
 
+
 def min_coord(nodes, coord):
-    min = nodes[1][coord]
+    min = nodes[1]["coords"][coord]
     for node in nodes:
-        if nodes[node][coord] < min:
-            min = nodes[node][coord]
+        if nodes[node]["coords"][coord] < min:
+            min = nodes[node]["coords"][coord]
     return min
 
 

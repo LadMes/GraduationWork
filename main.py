@@ -1,8 +1,8 @@
-from src_readers import get_node_coords, get_elems
+from src_readers import get_nodes, get_elems
 from grid import *
 
 
-nodes = get_node_coords()
+nodes = get_nodes()
 elems = get_elems()
 
 grid = Grid(nodes, elems)

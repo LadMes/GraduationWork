@@ -38,7 +38,7 @@ class Grid:
         y_step = get_step(self.min_y, self.max_y, self.num_y_tiles)
 
         for i in range(1, max(elems)):
-            coords = elems[i]["centroid_coords"]
+            coords = elems[i]["coords"]
             y = get_y_index(self.max_y, coords["y"], y_step)
             x = get_x_index(self.min_x, coords["x"], x_step)
 
