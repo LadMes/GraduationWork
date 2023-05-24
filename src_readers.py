@@ -39,12 +39,3 @@ def get_elems_shape_parameters(elems, source_folder):
             for param in shape_parameters:
                 if param in row:
                     elems[int(row["id"])]["elem_shape_prop"][param] = float(row[param])
-
-
-def process_dimension(dimension: str):
-
-    dimension = dimension.upper()
-    if dimension == "2D" or dimension == "3D":
-        return dimension
-    
-    raise Exception("Wrong dimension")

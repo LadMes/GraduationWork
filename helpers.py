@@ -1,5 +1,14 @@
 import math
 
+def process_dimension(dimension: str):
+
+    dimension = dimension.upper()
+    if dimension == "2D" or dimension == "3D":
+        return dimension
+    
+    raise Exception("Wrong dimension")
+
+
 def max_coord(nodes, coord):
     max = nodes[1]["coords"][coord]
     for node in nodes:
@@ -22,6 +31,10 @@ def get_num_x_tiles():
 
 def get_num_y_tiles():
     return 5
+
+
+def get_num_z_tiles():
+    return 4
 
 
 def get_step(min_coord, max_coord, num_tiles):
