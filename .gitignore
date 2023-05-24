@@ -4,4 +4,5 @@ elem_shpars.txt
 node_coords.txt
 elem_centroid_coords.txt
 export_elem_nodes_diff.mac
+src
 __pycache__
