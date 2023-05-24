@@ -1,16 +1,18 @@
-def get_nodes():
+import csv
+
+def get_nodes(source_folder):
 
     nodes = dict()
-    get_coords("src/node_coords.txt", nodes)
+    get_coords(f"{source_folder}/node_coords.txt", nodes)
 
     return nodes
 
 
-def get_elems():
+def get_elems(source_folder):
 
     elems = dict()
-    get_coords("src/elem_centroid_coords.txt", elems)
-    get_elems_shape_parameters(elems)
+    get_coords(f"{source_folder}/elem_centroid_coords.txt", elems)
+    get_elems_shape_parameters(elems, source_folder)
 
     return elems
 
@@ -27,35 +29,22 @@ def get_coords(source, receiver):
                 receiver[int(values[0])]["coords"]["z"] = float(values[3])
 
 
-def get_elems_shape_parameters(elems):
+def get_elems_shape_parameters(elems, source_folder):
 
-    with open("src/elem_shpars.txt", mode="r") as file:
-        for line in file:
-            values = line.split(",")
-            elems[int(values[0])]["elem_shape_prop"] = { 
-                "ASPE": float(values[1]), 
-                "JACR": float(values[2]), 
-                "MAXA": float(values[3]), 
-                "PARA": float(values[4])
-            }
-            if len(values) == 6:
-                elems[int(values[0])]["elem_shape_prop"]["WARP"] = float(values[5])
+    shape_parameters = ["ASPE", "JACR", "MAXA", "PARA", "WARP"]
+    with open(f"{source_folder}/elem_shpars.txt", mode="r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            elems[int(row["id"])]["elem_shape_prop"] = dict()
+            for param in shape_parameters:
+                if param in row:
+                    elems[int(row["id"])]["elem_shape_prop"][param] = float(row[param])
 
 
-'''def get_elem_nodes():
-    elems = dict()
-    with open("src/elem_nodes.txt", mode="r") as file:
-        elem_num = 0
-        while True:
-            try:
-                num_nodes_per_elem = int(file.readline())
-                elem_num += 1
-                elem_nodes = list()
-                for _ in range(int(num_nodes_per_elem)):
-                    node = file.readline()
-                    elem_nodes.append(int(node))
-                elems[elem_num] = { "nodes": elem_nodes }
-            except:
-                break
+def process_dimension(dimension: str):
+
+    dimension = dimension.upper()
+    if dimension == "2D" or dimension == "3D":
+        return dimension
     
-    return elems'''
+    raise Exception("Wrong dimension")

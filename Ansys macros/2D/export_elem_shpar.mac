@@ -13,7 +13,6 @@ alls
         *GET,jacr_,ELEM,elem_,SHPAR,JACR !Jacobian ratio
         *GET,maxa_,ELEM,elem_,SHPAR,MAXA !Maximum corner angle
         *GET,para_,ELEM,elem_,SHPAR,PARA !Deviation from parallelism of opposite edges
-        !*GET,warp_,ELEM,elem_,SHPAR,WARP !Remove the exclamation mark and add the var name and format for the VWRITE func when needed
         
         ! Write line
         *VWRITE,elem_,aspe_,jacr_,maxa_,para_

@@ -2,8 +2,8 @@ from src_readers import get_nodes, get_elems
 from grid import *
 
 
-nodes = get_nodes()
-elems = get_elems()
+nodes = get_nodes("src/2D")
+elems = get_elems("src/2D")
 
 grid = Grid(nodes, elems)
 

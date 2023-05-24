@@ -1,0 +1,23 @@
+!Export element shape test result to CSV
+!NOTE:  *VWRITE command can only be executed from an external file by e.g /INPUT
+
+alls
+
+*CFOPEN,elem_shpars,txt
+    *GET,num_elems_,ELEM,0,COUNT !Get the number of elements
+    *GET,elem_,ELEM,0,NUM,MIN !Get label of the first element
+
+    *DO,i,1,num_elems_,1
+        ! Define some parameters
+        *GET,aspe_,ELEM,elem_,SHPAR,ASPE !Aspect ratio
+        *GET,jacr_,ELEM,elem_,SHPAR,JACR !Jacobian ratio
+        *GET,maxa_,ELEM,elem_,SHPAR,MAXA !Maximum corner angle
+        
+        ! Write line
+        *VWRITE,elem_,aspe_,jacr_,maxa_
+        %I,%G,%G,%G
+      
+        ! select the next node
+        *GET,elem_,ELEM,elem_,NXTH
+    *ENDDO
+*CFCLOSE
