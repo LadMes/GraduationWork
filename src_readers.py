@@ -39,3 +39,15 @@ def get_elems_shape_parameters(elems, source_folder):
             for param in shape_parameters:
                 if param in row:
                     elems[int(row["id"])]["elem_shape_prop"][param] = float(row[param])
+
+
+def get_num_of_tiles(source_folder):
+
+    with open(f"{source_folder}/num_of_tiles.txt", mode="r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            return {
+                "num_x_tiles": int(row["x"]),
+                "num_y_tiles": int(row["y"]),
+                "num_z_tiles": int(row["z"]) if "z" in row else 0
+            }

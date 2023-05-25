@@ -26,11 +26,11 @@ def min_coord(nodes, coord):
 
 
 def get_num_x_tiles():
-    return 7
+    return 4
 
 
 def get_num_y_tiles():
-    return 5
+    return 4
 
 
 def get_num_z_tiles():

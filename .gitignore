@@ -1,8 +1,3 @@
-Bracket with two holes.txt
-elem_nodes.txt
-elem_shpars.txt
-node_coords.txt
-elem_centroid_coords.txt
 export_elem_nodes_diff.mac
-3d_bracket.txt
+src/
 __pycache__

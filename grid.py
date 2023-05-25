@@ -22,9 +22,9 @@ class Grid:
     }
 
 
-    def __init__(self, nodes, elems, dimension="2D"):
+    def __init__(self, nodes, elems, num_of_tiles, dimension="2D"):
         self.dimension = process_dimension(dimension)
-        self.init_num_of_tiles()
+        self.num_of_tiles = num_of_tiles
         self.init_grid()
         self.init_min_max_coords(nodes)
         self.populate_grid(elems)
