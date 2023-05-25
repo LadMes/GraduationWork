@@ -49,3 +49,8 @@ def get_x_index(min_x, x, x_step):
 def get_y_index(max_y, y, y_step):
     index = math.ceil((abs(max_y) - y) / y_step) - 1
     return index if index >= 0 else 0
+
+
+def get_z_index(max_z, z, z_step):
+    index = math.ceil((abs(max_z) - z) / z_step) - 1
+    return index if index >= 0 else 0

@@ -6,6 +6,7 @@ from elem_quality import is_bad_elem
 class Grid:
 
     grid = []
+    dimension = "2D"
     num_of_tiles = {
         "num_x_tiles": 0,
         "num_y_tiles": 0,
@@ -22,23 +23,23 @@ class Grid:
 
 
     def __init__(self, nodes, elems, dimension="2D"):
-        dimension = process_dimension(dimension)
-        self.init_num_of_tiles(dimension)
-        self.init_grid(dimension)
-        self.init_min_max_coords(nodes, dimension)
-        self.populate_grid(elems, dimension)
+        self.dimension = process_dimension(dimension)
+        self.init_num_of_tiles()
+        self.init_grid()
+        self.init_min_max_coords(nodes)
+        self.populate_grid(elems)
 
 
-    def init_num_of_tiles(self, dimension):
+    def init_num_of_tiles(self):
         self.num_of_tiles["num_x_tiles"] = get_num_x_tiles()
         self.num_of_tiles["num_y_tiles"] = get_num_y_tiles()
-        if dimension == "3D":
+        if self.dimension == "3D":
             self.num_of_tiles["num_z_tiles"] = get_num_z_tiles()
 
 
-    def init_grid(self, dimension):
+    def init_grid(self):
 
-        if dimension == "2D":
+        if self.dimension == "2D":
             self.init_2d_grid()
         else:
             self.init_3d_grid()
@@ -59,40 +60,77 @@ class Grid:
                       for _ in range(self.num_of_tiles["num_z_tiles"])]
 
 
-    def init_min_max_coords(self, nodes, dimension):
+    def init_min_max_coords(self, nodes):
 
         self.min_max_coords["min_x"] = min_coord(nodes, "x")
         self.min_max_coords["max_x"] = max_coord(nodes, "x")
         self.min_max_coords["min_y"] = min_coord(nodes, "y")
         self.min_max_coords["max_y"] = max_coord(nodes, "y")
-        if dimension == "3D":
+        if self.dimension == "3D":
             self.min_max_coords["min_z"] = min_coord(nodes, "z")
             self.min_max_coords["max_z"] = max_coord(nodes, "z")
 
-    # TODO: Correct this
+
     def populate_grid(self, elems):
-        x_step = get_step(self.min_x, self.max_x, self.num_x_tiles)
-        y_step = get_step(self.min_y, self.max_y, self.num_y_tiles)
+        x_step = get_step(self.min_max_coords["min_x"], 
+                          self.min_max_coords["max_x"], 
+                          self.num_of_tiles["num_x_tiles"])
+        y_step = get_step(self.min_max_coords["min_y"], 
+                          self.min_max_coords["max_y"], 
+                          self.num_of_tiles["num_y_tiles"])
+        
+        if self.dimension == "3D":
+            z_step = get_step(self.min_max_coords["min_z"], 
+                              self.min_max_coords["max_z"], 
+                              self.num_of_tiles["num_z_tiles"])
 
         for i in range(1, max(elems)):
             coords = elems[i]["coords"]
-            y = get_y_index(self.max_y, coords["y"], y_step)
-            x = get_x_index(self.min_x, coords["x"], x_step)
+            y = get_y_index(self.min_max_coords["max_y"], coords["y"], y_step)
+            x = get_x_index(self.min_max_coords["min_x"], coords["x"], x_step)
+            zone = {}
+            if self.dimension == "3D":
+                z = get_z_index(self.min_max_coords["max_z"], coords["z"], z_step)
+                zone = self.grid[z][y][x]
+            else:
+                zone = self.grid[y][x]
 
-            self.grid[y][x]["elems"].append(elems[i])
+            zone["elems"].append(elems[i])
             if is_bad_elem(elems[i]):
-                self.grid[y][x]["bad_elems"].append(elems[i])
+                zone["bad_elems"].append(elems[i])
 
-# TODO: Correct this
-class GridUtilities:
+
+    def calculate_percentage_of_bad_elems(self):
+
+        if self.dimension == "3D":
+            return self.calculate_percentage_of_bad_elems_in_3D_grid()
+        else:
+            return self.calculate_percentage_of_bad_elems_in_2D_grid()
     
-    def calculate_percentage_bad_elems(grid):
-        percentage_bad_elems = numpy.zeros((grid.num_y_tiles, grid.num_x_tiles))
 
-        for i in range(grid.num_y_tiles):
-            for j in range(grid.num_x_tiles):
-                num_elems = len(grid.grid[i][j]["elems"])
+    def calculate_percentage_of_bad_elems_in_2D_grid(self):
+        percentage_of_bad_elems = numpy.zeros((self.num_of_tiles["num_y_tiles"], 
+                                               self.num_of_tiles["num_x_tiles"]))
+
+        for i in range(self.num_of_tiles["num_y_tiles"]):
+            for j in range(self.num_of_tiles["num_x_tiles"]):
+                num_elems = len(self.grid[i][j]["elems"])
                 if num_elems != 0:
-                    percentage_bad_elems[i][j] = len(grid.grid[i][j]["bad_elems"]) / num_elems * 100
+                    percentage_of_bad_elems[i][j] = len(self.grid[i][j]["bad_elems"]) / num_elems * 100
             
-        return percentage_bad_elems
+        return percentage_of_bad_elems
+    
+
+    def calculate_percentage_of_bad_elems_in_3D_grid(self):
+        percentage_of_bad_elems = numpy.zeros((self.num_of_tiles["num_z_tiles"],
+                                               self.num_of_tiles["num_y_tiles"], 
+                                               self.num_of_tiles["num_x_tiles"]))
+
+        for k in range(self.num_of_tiles["num_z_tiles"]):
+            for i in range(self.num_of_tiles["num_y_tiles"]):
+                for j in range(self.num_of_tiles["num_x_tiles"]):
+                    num_elems = len(self.grid[k][i][j]["elems"])
+                    if num_elems != 0:
+                        percentage_of_bad_elems[k][i][j] = len(self.grid[k][i][j]["bad_elems"]) / num_elems * 100
+            
+        return percentage_of_bad_elems
