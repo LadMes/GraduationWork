@@ -78,18 +78,13 @@ def print_2d_grid(grid, num_of_tiles):
     for i in range(num_of_tiles["num_y_tiles"]):
         row = "| "
         for j in range(num_of_tiles["num_x_tiles"]):
-            row += "{:02d.2f}".format(grid[i][j]).zfill(5) + "% "
+            row += "{:.2f}".format(grid[i][j]).zfill(5) + "% "
         row += "|"
         print(row)
 
 
 def print_3d_grid(grid, num_of_tiles):
-    
+
     for k in range(num_of_tiles["num_z_tiles"]):
-        for i in range(num_of_tiles["num_y_tiles"]):
-            row = "| "
-            for j in range(num_of_tiles["num_x_tiles"]):
-                row += "{:.2f}".format(grid[k][i][j]).zfill(5) + "% "
-            row += "|"
-            print(row)
+        print_2d_grid(grid[k], num_of_tiles)
         print("\n")
