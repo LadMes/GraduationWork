@@ -1,5 +1,3 @@
-import numpy
-
 from helpers import *
 from elem_quality import is_bad_elem
 
@@ -72,6 +70,7 @@ class Grid:
 
 
     def populate_grid(self, elems):
+
         x_step = get_step(self.min_max_coords["min_x"], 
                           self.min_max_coords["max_x"], 
                           self.num_of_tiles["num_x_tiles"])
@@ -103,34 +102,30 @@ class Grid:
     def calculate_percentage_of_bad_elems(self):
 
         if self.dimension == "3D":
-            return self.calculate_percentage_of_bad_elems_in_3D_grid()
+            return self.calculate_percentage_of_bad_elems_in_3D_grid(self.grid)
         else:
-            return self.calculate_percentage_of_bad_elems_in_2D_grid()
+            return self.calculate_percentage_of_bad_elems_in_2D_grid(self.grid)
     
 
-    def calculate_percentage_of_bad_elems_in_2D_grid(self):
-        percentage_of_bad_elems = numpy.zeros((self.num_of_tiles["num_y_tiles"], 
-                                               self.num_of_tiles["num_x_tiles"]))
+    def calculate_percentage_of_bad_elems_in_2D_grid(self, grid):
+
+        percentage_of_bad_elems = [[ 0 for _ in range(self.num_of_tiles["num_x_tiles"])] 
+                                       for _ in range(self.num_of_tiles["num_y_tiles"])]
 
         for i in range(self.num_of_tiles["num_y_tiles"]):
             for j in range(self.num_of_tiles["num_x_tiles"]):
-                num_elems = len(self.grid[i][j]["elems"])
+                num_elems = len(grid[i][j]["elems"])
                 if num_elems != 0:
-                    percentage_of_bad_elems[i][j] = len(self.grid[i][j]["bad_elems"]) / num_elems * 100
+                    percentage_of_bad_elems[i][j] = len(grid[i][j]["bad_elems"]) / num_elems * 100
             
         return percentage_of_bad_elems
     
 
-    def calculate_percentage_of_bad_elems_in_3D_grid(self):
-        percentage_of_bad_elems = numpy.zeros((self.num_of_tiles["num_z_tiles"],
-                                               self.num_of_tiles["num_y_tiles"], 
-                                               self.num_of_tiles["num_x_tiles"]))
+    def calculate_percentage_of_bad_elems_in_3D_grid(self, grid):
+
+        percentage_of_bad_elems = []
 
         for k in range(self.num_of_tiles["num_z_tiles"]):
-            for i in range(self.num_of_tiles["num_y_tiles"]):
-                for j in range(self.num_of_tiles["num_x_tiles"]):
-                    num_elems = len(self.grid[k][i][j]["elems"])
-                    if num_elems != 0:
-                        percentage_of_bad_elems[k][i][j] = len(self.grid[k][i][j]["bad_elems"]) / num_elems * 100
+            percentage_of_bad_elems.append(self.calculate_percentage_of_bad_elems_in_2D_grid(grid[k]))
             
         return percentage_of_bad_elems
