@@ -31,14 +31,14 @@ def get_coords(source, receiver):
 
 def get_elems_shape_parameters(elems, source_folder):
 
-    shape_parameters = ["ASPE", "JACR", "MAXA", "PARA", "WARP"]
     with open(f"{source_folder}/elem_shpars.txt", mode="r") as file:
         reader = csv.DictReader(file)
         for row in reader:
-            elems[int(row["id"])]["elem_shape_prop"] = dict()
-            for param in shape_parameters:
-                if param in row:
-                    elems[int(row["id"])]["elem_shape_prop"][param] = float(row[param])
+            for key in reader.fieldnames:
+                if key == "id":
+                    elems[int(row["id"])]["elem_shape_prop"] = dict()
+                else:
+                    elems[int(row["id"])]["elem_shape_prop"][key] = float(row[key])
 
 
 def get_num_of_tiles(source_folder):
