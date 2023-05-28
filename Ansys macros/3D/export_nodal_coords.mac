@@ -4,7 +4,9 @@
 alls
 
 *CFOPEN,node_coords,txt
-
+    *VWRITE,'id','x','y','z'
+    %C,%C,%C,%C
+    
     *GET,num_nodes_,NODE,0,COUNT !Get the number of nodes
     *GET,node_,NODE,0,NUM,MIN !Get label of the first node
 

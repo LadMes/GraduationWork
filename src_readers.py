@@ -20,13 +20,14 @@ def get_elems(source_folder):
 def get_coords(source, receiver):
 
     with open(source, mode="r") as file:
-        for line in file:
-            values = line.split(",")
-            receiver[int(values[0])] = { "coords": dict() }
-            receiver[int(values[0])]["coords"]["x"] = float(values[1])
-            receiver[int(values[0])]["coords"]["y"] = float(values[2])
-            if len(values) == 4:
-                receiver[int(values[0])]["coords"]["z"] = float(values[3])
+
+        reader = csv.DictReader(file)
+        for row in reader:
+            for key in row.keys:
+                if key == "id":
+                    receiver[int(row["id"])] = { "coords": dict() }  
+                else:
+                    receiver[int(row["id"])]["coords"][key] = float(row[key])
 
 
 def get_elems_shape_parameters(elems, source_folder):

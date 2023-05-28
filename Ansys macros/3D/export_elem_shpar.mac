@@ -4,6 +4,9 @@
 alls
 
 *CFOPEN,elem_shpars,txt
+    *VWRITE,'id','ASPE','JACR','MAXA'
+    %C,%C,%C,%C
+
     *GET,num_elems_,ELEM,0,COUNT !Get the number of elements
     *GET,elem_,ELEM,0,NUM,MIN !Get label of the first element
 

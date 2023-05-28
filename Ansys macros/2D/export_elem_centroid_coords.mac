@@ -4,6 +4,8 @@
 alls
 
 *CFOPEN,elem_centroid_coords,txt
+    *VWRITE,'id','x','y'
+    %C,%C,%C
 
     *GET,num_elems_,ELEM,0,COUNT !Get the number of elements
     *GET,elem_,ELEM,0,NUM,MIN !Get label of the first element
