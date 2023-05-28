@@ -20,10 +20,9 @@ def get_elems(source_folder):
 def get_coords(source, receiver):
 
     with open(source, mode="r") as file:
-
         reader = csv.DictReader(file)
         for row in reader:
-            for key in row.keys:
+            for key in reader.fieldnames:
                 if key == "id":
                     receiver[int(row["id"])] = { "coords": dict() }  
                 else:
