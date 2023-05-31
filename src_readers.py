@@ -20,25 +20,27 @@ def get_elems(source_folder):
 def get_coords(source, receiver):
 
     with open(source, mode="r") as file:
-        reader = csv.DictReader(file)
+        fieldnames = list(map(lambda key: key.strip(), file.readline().split(',')))
+        reader = csv.DictReader(file, fieldnames=fieldnames)
+
+        keys = list(filter(lambda key: key != "id", fieldnames))
         for row in reader:
-            for key in reader.fieldnames:
-                if key == "id":
-                    receiver[int(row["id"])] = { "coords": dict() }  
-                else:
-                    receiver[int(row["id"])]["coords"][key] = float(row[key])
+            receiver[int(row["id"])] = { "coords": dict() } 
+            for key in keys:
+                receiver[int(row["id"])]["coords"][key] = float(row[key])
 
 
 def get_elems_shape_parameters(elems, source_folder):
 
     with open(f"{source_folder}/elem_shpars.txt", mode="r") as file:
-        reader = csv.DictReader(file)
+        fieldnames = list(map(lambda key: key.strip(), file.readline().split(',')))
+        reader = csv.DictReader(file, fieldnames)
+
+        keys = list(filter(lambda key: key != "id", fieldnames))
         for row in reader:
-            for key in reader.fieldnames:
-                if key == "id":
-                    elems[int(row["id"])]["elem_shape_prop"] = dict()
-                else:
-                    elems[int(row["id"])]["elem_shape_prop"][key] = float(row[key])
+            elems[int(row["id"])]["elem_shape_prop"] = dict()
+            for key in keys:
+                elems[int(row["id"])]["elem_shape_prop"][key] = float(row[key])
 
 
 def get_num_of_tiles(source_folder):
