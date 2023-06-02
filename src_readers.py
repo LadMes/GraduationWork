@@ -34,7 +34,7 @@ def get_elems_shape_parameters(elems, source_folder):
 
     with open(f"{source_folder}/elem_shpars.txt", mode="r") as file:
         fieldnames = list(map(lambda key: key.strip(), file.readline().split(',')))
-        reader = csv.DictReader(file, fieldnames)
+        reader = csv.DictReader(file, fieldnames=fieldnames)
 
         keys = list(filter(lambda key: key != "id", fieldnames))
         for row in reader:
@@ -46,7 +46,9 @@ def get_elems_shape_parameters(elems, source_folder):
 def get_num_of_tiles(source_folder):
 
     with open(f"{source_folder}/num_of_tiles.txt", mode="r") as file:
-        reader = csv.DictReader(file)
+        fieldnames = list(map(lambda key: key.strip(), file.readline().split(',')))
+        reader = csv.DictReader(file, fieldnames=fieldnames)
+        
         for row in reader:
             return {
                 "num_x_tiles": int(row["x"]),
