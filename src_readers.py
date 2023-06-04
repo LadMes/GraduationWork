@@ -1,20 +1,12 @@
 import csv
 
-def get_nodes(source_folder):
 
-    nodes = dict()
-    get_coords(f"{source_folder}/node_coords.txt", nodes)
+def get_entity(source):
 
-    return nodes
+    entity = dict()
+    get_coords(source, entity)
 
-
-def get_elems(source_folder):
-
-    elems = dict()
-    get_coords(f"{source_folder}/elem_centroid_coords.txt", elems)
-    get_elems_shape_parameters(elems, source_folder)
-
-    return elems
+    return entity
 
 
 def get_coords(source, receiver):
@@ -30,9 +22,9 @@ def get_coords(source, receiver):
                 receiver[int(row["id"])]["coords"][key] = float(row[key])
 
 
-def get_elems_shape_parameters(elems, source_folder):
+def get_elems_shape_parameters(elems, source):
 
-    with open(f"{source_folder}/elem_shpars.txt", mode="r") as file:
+    with open(source, mode="r") as file:
         fieldnames = list(map(lambda key: key.strip(), file.readline().split(',')))
         reader = csv.DictReader(file, fieldnames=fieldnames)
 
@@ -43,15 +35,9 @@ def get_elems_shape_parameters(elems, source_folder):
                 elems[int(row["id"])]["elem_shape_prop"][key] = float(row[key])
 
 
-def get_num_of_tiles(source_folder):
-
-    with open(f"{source_folder}/num_of_tiles.txt", mode="r") as file:
-        fieldnames = list(map(lambda key: key.strip(), file.readline().split(',')))
-        reader = csv.DictReader(file, fieldnames=fieldnames)
-        
-        for row in reader:
-            return {
-                "num_x_tiles": int(row["x"]),
-                "num_y_tiles": int(row["y"]),
-                "num_z_tiles": int(row["z"]) if "z" in row else 0
-            }
+def get_num_of_tiles(source):
+    return {
+        "num_x_tiles": int(source["num_x_tiles"]),
+        "num_y_tiles": int(source["num_y_tiles"]),
+        "num_z_tiles": int(source["num_z_tiles"]) if "num_z_tiles" in source else 0
+    }

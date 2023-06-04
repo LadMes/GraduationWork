@@ -27,24 +27,9 @@ def min_coord(nodes, coord):
     return min
 
 
-def get_num_x_tiles():
+def get_step(min_coord, max_coord, num_of_tiles):
 
-    return 4
-
-
-def get_num_y_tiles():
-
-    return 4
-
-
-def get_num_z_tiles():
-
-    return 4
-
-
-def get_step(min_coord, max_coord, num_tiles):
-
-    return (abs(min_coord) + abs(max_coord)) / num_tiles
+    return (abs(min_coord) + abs(max_coord)) / num_of_tiles
 
 
 def get_x_index(min_x, x, x_step):
@@ -65,9 +50,9 @@ def get_z_index(max_z, z, z_step):
     return index if index >= 0 else 0
 
 
-def print_grid(grid, num_of_tiles):
+def print_grid(grid, num_of_tiles, dimension):
 
-    if num_of_tiles["num_z_tiles"] == 0:
+    if dimension == "2D":
         print_2d_grid(grid, num_of_tiles)
     else:
         print_3d_grid(grid, num_of_tiles)

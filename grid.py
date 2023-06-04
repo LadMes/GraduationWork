@@ -20,42 +20,32 @@ class Grid:
     }
 
 
-    def __init__(self, nodes, elems, num_of_tiles, dimension="2D"):
+    def __init__(self, nodes, elems, num_of_tiles, dimension):
         self.dimension = process_dimension(dimension)
         self.num_of_tiles = num_of_tiles
-        self.init_grid()
+        self.grid = self.init_grid()
         self.init_min_max_coords(nodes)
         self.populate_grid(elems)
-
-
-    def init_num_of_tiles(self):
-        self.num_of_tiles["num_x_tiles"] = get_num_x_tiles()
-        self.num_of_tiles["num_y_tiles"] = get_num_y_tiles()
-        if self.dimension == "3D":
-            self.num_of_tiles["num_z_tiles"] = get_num_z_tiles()
 
 
     def init_grid(self):
 
         if self.dimension == "2D":
-            self.init_2d_grid()
+            return self.init_2d_grid()
         else:
-            self.init_3d_grid()
+            return self.init_3d_grid()
 
 
     def init_2d_grid(self):
 
-        self.grid = [[ {"elems": list(), "bad_elems": list()} 
+        return [[ {"elems": list(), "bad_elems": list()} 
                       for _ in range(self.num_of_tiles["num_x_tiles"])] 
                       for _ in range(self.num_of_tiles["num_y_tiles"])]
 
 
     def init_3d_grid(self):
 
-        self.grid = [[[ {"elems": list(), "bad_elems": list()} 
-                      for _ in range(self.num_of_tiles["num_x_tiles"])] 
-                      for _ in range(self.num_of_tiles["num_y_tiles"])] 
-                      for _ in range(self.num_of_tiles["num_z_tiles"])]
+        return [self.init_2d_grid() for _ in range(self.num_of_tiles["num_z_tiles"])]
 
 
     def init_min_max_coords(self, nodes):
