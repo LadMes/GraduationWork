@@ -18,11 +18,12 @@ class Grid:
         "min_z": 0,
         "max_z": 0
     }
+    criteria_ranges = {}
 
-
-    def __init__(self, nodes, elems, num_of_tiles, dimension):
+    def __init__(self, nodes, elems, num_of_tiles, dimension, criteria_ranges):
         self.dimension = process_dimension(dimension)
         self.num_of_tiles = num_of_tiles
+        self.criteria_ranges = criteria_ranges
         self.grid = self.init_grid()
         self.init_min_max_coords(nodes)
         self.populate_grid(elems)
@@ -85,7 +86,7 @@ class Grid:
                 zone = self.grid[y][x]
 
             zone["elems"].append(elems[i])
-            if is_bad_elem(elems[i]):
+            if is_bad_elem(elems[i], self.criteria_ranges):
                 zone["bad_elems"].append(elems[i])
 
 
