@@ -2,7 +2,7 @@ import configparser
 
 from src_readers import SourceReader
 from grid import Grid
-from helpers import print_grid
+from helpers import format_result, write_result_to_file
 
 
 config = configparser.ConfigParser()
@@ -18,6 +18,8 @@ grid = Grid(grid_params["nodes"],
 
 percentage_of_bad_elems = grid.calculate_percentage_of_bad_elems()
 
-print_grid(percentage_of_bad_elems, 
-           grid_params["num_of_tiles"], 
-           grid_params["dimension"])
+formatted_result = format_result(percentage_of_bad_elems, 
+                                grid_params["num_of_tiles"], 
+                                grid_params["dimension"])
+
+write_result_to_file(config["common"]["source_folder"], formatted_result)

@@ -1,4 +1,5 @@
 import csv
+from helpers import format_folder
 
 
 class SourceReader:
@@ -10,8 +11,7 @@ class SourceReader:
 
     def get_grid_params(self):
 
-        source_folder = self.config["common"]["source_folder"]
-        source_folder = source_folder if source_folder[-1] == "/" else source_folder + "/"
+        source_folder = format_folder(self.config["common"]["source_folder"])
 
         node_coords_file = self.config["file_names"]["node_coords"]
         elem_centroid_coords_file = self.config["file_names"]["elem_centroid_coords"]
